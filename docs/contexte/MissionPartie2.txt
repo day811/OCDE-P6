@@ -1,0 +1,122 @@
+Mission Partie 2 - Exposez votre modèle prédictif via une API
+Quelques jours plus tard
+Barre
+
+ 
+
+Après quelques jours de travail, vous avez réussi à sécuriser un modèle de ML suffisamment performant. Vous écrivez alors un message au Project Lead Douglas pour lui communiquer en bref les performances de votre modèle et l’inviter à une réunion pour présenter votre approche détaillée. 
+
+ 
+
+Il vous répond rapidement :
+
+ 
+
+Bonjour, 
+
+ 
+
+Merci pour le travail précieux que tu as déjà effectué sur ce projet à haute visibilité ! Les performances du modèle sont assez rassurantes. Avant de faire un point pour rentrer dans le détail, je préfère que tu prépares une démo pour notre prochain comité de pilotage avec la mairie de Seattle. En effet, ils seraient très intéressés par un outil où un citoyen propriétaire d’un bâtiment pourrait entrer des informations concernant son bâtiment et obtenir une prédiction de la consommation d’énergie en temps réel. 
+
+ 
+
+Ta collègue Léa avait déjà présenté quelque chose de similaire sur un autre projet en créant une API via un outil qui s’appelle BentoML. 
+
+ 
+
+Avec une démo d’un prototype fonctionnel, on est sûr de faire mouche auprès de la direction. 
+
+ 
+
+Bien à toi, 
+
+ 
+
+Douglas
+
+ 
+
+Pour réaliser cette 2ème partie de la mission, suivez les étapes ci-dessous.
+
+Étapes
+ETAPE 1
+Prérequis 
+
+S’être familiarisé avec le vocabulaire technique de la ressource pédagogique présentant les notions et le lexique. 
+Avoir regardé le chapitre du cours cité dans la section Ressources de cette étape.
+Résultats attendus  
+
+Un ou plusieurs fichiers Python :
+contenant la logique de l’API et son serving ;
+contenant une logique de validation de la donnée envoyée à l’API ;
+utilisables via la commande bentoml serve.
+Instructions
+
+Sauvegardez le modèle entraîné de la première partie de la mission via BentoML. Consultez la section Ressources pour plus d’informations.
+Définissez dans un fichier service.py la logique de votre API et de votre endpoint.
+Testez le service en local, via des requêtes dans un script ou terminal, puis via l'interface Swagger.
+En utilisant la librairie Pydantic ou Pandera, implémentez une logique de validation de la donnée envoyée à l'API, afin d'empêcher un utilisateur d’envoyer des informations incohérentes.
+Recommandations  
+
+Réfléchir au format de données que doit envoyer l'utilisateur de l'API (il ne connaît pas nécessairement vos encodages de features etc.).
+Sauvegarder le modèle en même temps que les features avec l'argument custom_objects de bentoml.models.create() peut être utile. Avec cette approche, on peut repasser ces features au modèle au moment de l'inférence. 
+
+Définir pour chaque feature ce qui pourrait représenter une valeur incohérente.
+Si votre nombre de features est trop grand (plus de 10 par exemple) : 
+Il suffira d’implémenter ces règles uniquement pour les features ayant la plus grande feature importance.
+On peut aller un cran plus loin et réentraîner le modèle avec les features les plus importantes uniquement. La perte de performance sera minime, mais vous aurez un modèle plus léger.
+
+Points de vigilance  
+
+Ne pas supposer que l'utilisateur final de l'API connaît vos étapes de pré-processing avant l'inférence.
+Au moment de l’inférence, Il faut que les features soient dans le même ordre que ce qu’a vu le modèle en apprentissage.
+Beaucoup de ressources/tutoriels sur BentoML utilisent le concept de Runner. Nous déconseillons de l’utiliser car il s’agit d’un concept archivé par les développeurs de BentoML. 
+Ressources 
+
+Ce chapitre Donnez de la transparence à votre modèle supervisé du cours avancé en apprentissage supervisé
+La documentation BentoML.
+La partie Getting Started de la documentation Pydantic.
+Attention : arrêtez le déploiement dès que vous aurez fini vos tests pour ne pas consommer inutilement des ressources de votre compte sur le Cloud.
+
+ETAPE 1
+Prérequis 
+
+Avoir stabilisé la logique définitive de l’API à déployer.
+Avoir installé Docker.
+Résultat attendu  
+
+Un fichier bentofile.yaml permettant de reproduire le container du modèle et son API (contenant à minima les services, le code source nécessaire à leur fonctionnement, le modèle et les dépendances)
+Instructions
+
+Déclarez les éléments nécessaires au déploiement au sein d’un bentofile.yaml. 
+Créez une image Docker via BentoM.L
+Créez un compte au sein de la plateforme Cloud de votre choix (AWS, GCP, Azure, Heroku etc.). 
+Vous pouvez sauter cette étape si vous travaillez au sein d'une entreprise qui a déjà un compte pour vous.
+
+Créez un projet sur la plateforme Cloud de votre choix en suivant les conseils ci-dessous.
+Installez le CLI ou le SDK de la plateforme Cloud, vous allez pouvoir interagir avec ses services depuis votre terminal ou en Python.
+En utilisant le SDK ou CLI, publiez l'image Docker au sein du service répertoire/registry d'images Docker de votre plateforme Cloud.
+Déployez votre modèle via l'image Docker en utilisant le service adapté de la plateforme Cloud.
+Interrogez de nouveau votre modèle déployé via des requêtes dans un script ou terminal, puis via l'interface Swagger.
+Recommandations  
+
+Vous pouvez préciser les versions exactes des packages au sein du bentofile.yaml en consultant le fichier poetry.lock.
+Dans votre fichier pyproject.toml de Poetry, il peut être intéressant de séparer les dépendances de production et de développement, ceci vous aidera à choisir les bons packages à inclure dans votre bentofile.yaml. Le chapitre du cours Poetry (indiqué dans la section Ressources) vous donne plus d’informations à ce sujet.
+Si vous hésitez à choisir la plateforme Cloud, sachez que GCP offre 300 euros de crédits gratuitement.
+Se référer à la documentation de la plateforme Cloud pour savoir comment déployer une image Docker (exemple pour AWS)
+Se contenter des services "généralistes" de déploiement de modèle de la plateforme Cloud. En effet, utiliser les services spécialisés dans le ML (comme SageMaker pour AWS) nécessite des ajustements supplémentaires de votre image Docker, ce qui n'est pas le but ici.
+Points de vigilance  
+
+Ne pas inclure dans le bentofile.yaml des fichiers superflus, afin de garder l'image Docker légère.
+Ne pas confondre les services au sens "serving" d'une API et les services au sens "service Cloud", c'est-à-dire les fonctionnalités de la plateforme Cloud.
+Nous déconseillons d'utiliser le package bentoclt (que vous pouvez croiser dans plusieurs tutoriels), car il a été archivé par les développeurs de BentoML.
+Arrêter le déploiement dès que vous avez fini vos tests pour ne pas consommer inutilement des ressources de votre compte sur le Cloud. 
+
+Ressources 
+
+Ce chapitre Préparez le déploiement de votre modèle en production du cours avancé en apprentissage supervisé
+La section du cours Poetry Configurez votre environnement de travail et vos packages
+
+
+
+
