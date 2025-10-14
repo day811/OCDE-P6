@@ -1,6 +1,7 @@
 #.gitignore
 sources/
 local_*
+bc_after_eda*
 
 
 # Byte-compiled / optimized / DLL files
