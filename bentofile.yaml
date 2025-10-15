@@ -1,6 +1,6 @@
 #bentofile.yaml
 
-service: "ocde_p6.api.service:svc"
+service: "ocde_p6.api.service:BuildingEnergyService"
 name: "building_energy_prediction"
 description: "API for predicting building energy consumption in Seattle"
 
