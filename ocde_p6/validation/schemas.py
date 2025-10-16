@@ -2,64 +2,114 @@
 
 """Pydantic schemas for input validation."""
 
-from pydantic import BaseModel, Field, field_validator
-from typing import Literal
-from enum import Enum
-
-class BuildingTypeEnum(str, Enum):
-    """Allowed building types."""
-    HOTEL = "Hotel"
-    DATA_CENTER = "DataCenter"
-    RESTAURANT = "Restaurant"
+from pydantic import BaseModel, Field, validator
+from typing import Optional
 
 class BuildingInput(BaseModel):
-    """Input schema for building energy prediction.
+    """Input schema for building energy prediction."""
     
-    Validates user input for the building energy prediction API.
-    """
+    first_use_type: str = Field(
+        ...,
+        description="Primary use type of the building",
+        example="Hotel"
+    )
+    
+    second_largest_property_use_type: Optional[str] = Field(
+        default=None,
+        description="Second largest property use type",
+        example="Parking"
+    )
+    
+    multiple_use_type: int = Field(
+        default=1,
+        ge=1,
+        le=10,
+        description="Number of different property use types",
+        example=1
+    )
+    
+    sum_largest_GFA : float = Field(
+        ...,
+        ge=0,
+        description="Three largest property use type GFA in square feet",
+        example=88434.0
+    )
+    
+    use_steam: bool = Field(
+        default=False,
+        description="Building uses steam",
+        example=True
+    )
+    
+    use_gas: bool = Field(
+        default=False,
+        description="Building uses natural gas",
+        example=False
+    )
+    
+    number_of_floors: float = Field(
+        ...,
+        ge=1,
+        le=100,
+        description="Number of floors",
+        example=12.0
+    )
+    
+    number_of_buildings: float = Field(
+        default=1.0,
+        ge=1,
+        description="Number of buildings",
+        example=1.0
+    )
+    
+    city_distance: float = Field(
+        ...,
+        ge=0,
+        le=20,
+        description="Distance from city center in miles",
+        example=8.5
+    )
+    
+    neighborhood: str = Field(
+        ...,
+        description="Seattle neighborhood",
+        example="DOWNTOWN"
+    )
     
     year_built: int = Field(
         ...,
         ge=1900,
         le=2025,
         description="Year the building was constructed",
-        example=2010
+        example=1927
     )
     
-    first_use_type: BuildingTypeEnum = Field(
-        ...,
-        description="Primary use type of the building",
-        example="Hotel"
-    )
-    
-    @field_validator('year_built')
-    @classmethod
-    def validate_year_built(cls, v: int) -> int:
-        """Validate year built is reasonable."""
-        current_year = 2025
-        if v > current_year:
-            raise ValueError(f'Year built cannot be in the future (max: {current_year})')
-        if v < 1900:
-            raise ValueError('Year built seems unrealistic (min: 1900)')
-        return v
-    
-    model_config = {
-        "use_enum_values": True,
-        "json_schema_extra": {
+    class Config:
+        """Pydantic configuration."""
+        schema_extra = {
             "example": {
-                "year_built": 2010,
-                "first_use_type": "Hotel"
+                "first_use_type": "Hotel",
+                "second_largest_property_use_type": None,
+                "multiple_use_type": 1,
+                "3LargestGFA": 88434.0,
+                "use_steam": True,
+                "use_electricity": True,
+                "use_gas": False,
+                "number_of_floors": 12.0,
+                "number_of_buildings": 1.0,
+                "city_distance": 8.5,
+                "neighborhood": "DOWNTOWN",
+                "year_built": 1927
             }
         }
-    }
 
 class PredictionResponse(BaseModel):
     """Response schema for prediction results."""
     
     prediction: float = Field(
         ...,
-        description="Predicted energy consumption in kBtu",
-        example=125000.5
+        description="Predicted energy consumption in kBtu/sf",
+        example=81.71
     )
     
     input_data: BuildingInput = Field(

@@ -3,10 +3,10 @@
   "configurations": [
     {
       "name": "Python: Debug BentoML Service",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "~/.cache/pypoetry/virtualenvs/ocde-p6-qTWNOnCB-py3.13/bin/bentoml",
-      "args": ["serve", "ocde_p6.api.service:svc", "--reload"],
+      "args": ["serve", "ocde_p6.api.service:BuildingEnergyService", "--reload"],
       "console": "integratedTerminal",
       "env": {
         "PYTHONPATH": "${workspaceFolder}/ocde_p6"

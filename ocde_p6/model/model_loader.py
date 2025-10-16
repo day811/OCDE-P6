@@ -5,6 +5,7 @@
 import bentoml
 import logging
 from typing import Any
+from ocde_p6.preprocessing.transformer import fix_floors_and_discretize
 
 from ..utils.logger import get_logger
 from ..utils.exceptions import ModelLoadError
