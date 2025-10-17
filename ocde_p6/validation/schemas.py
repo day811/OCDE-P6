@@ -93,7 +93,6 @@ class BuildingInput(BaseModel):
                 "multiple_use_type": 1,
                 "3LargestGFA": 88434.0,
                 "use_steam": True,
-                "use_electricity": True,
                 "use_gas": False,
                 "number_of_floors": 12.0,
                 "number_of_buildings": 1.0,

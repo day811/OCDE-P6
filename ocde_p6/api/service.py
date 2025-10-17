@@ -3,7 +3,6 @@
 """BentoML service for building energy prediction API."""
 
 import bentoml
-from bentoml.io import JSON, Text
 
 
 import pandas as pd
@@ -33,35 +32,34 @@ class BuildingEnergyService:
         # Model will be loaded on first prediction
     
     @bentoml.api
-    def predict(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+    def predict(self, input_data: BuildingInput) -> Dict[str, Any]:
         """Predict building energy consumption.
         
         Args:
-            input_data: JSON containing building characteristics
+            input_data: Validated building characteristics (BentoML handles Pydantic validation)
             
         Returns:
             JSON response with prediction or error
         """
         try:
-            # Validate input data
             logger.info(f"Received input: {input_data}")
-            building_input = BuildingInput(**input_data)
+#            building_input = BuildingInput(**input_data)
             
             # Transform input data
-            df_input = data_transformer.transform_input(building_input)
+            df_input = data_transformer.transform_input(input_data)
             
             # Make prediction
             prediction = model_loader.predict(df_input)
             
             # Prepare response
             response = PredictionResponse(
-                prediction=float(prediction[0]),
-                input_data=building_input,
+                prediction=round(float(prediction[0]),0),
+                input_data=input_data,
                 status="success"
             )
             
             logger.info(f"Prediction successful: {prediction[0]}")
-            return response.dict()
+            return response.model_dump()
             
         except ValidationError as e:
             logger.error(f"Validation error: {str(e)}")
@@ -69,7 +67,7 @@ class BuildingEnergyService:
                 error=f"Input validation failed: {str(e)}",
                 status="validation_error"
             )
-            return error_response.dict()
+            return error_response.model_dump()
             
         except (ModelLoadError, PredictionError) as e:
             logger.error(f"Model error: {str(e)}")
@@ -77,7 +75,7 @@ class BuildingEnergyService:
                 error=f"Model error: {str(e)}",
                 status="model_error"
             )
-            return error_response.dict()
+            return error_response.model_dump()
             
         except Exception as e:
             logger.error(f"Unexpected error: {str(e)}\n{traceback.format_exc()}")
@@ -85,7 +83,7 @@ class BuildingEnergyService:
                 error=f"Internal server error: {str(e)}",
                 status="internal_error"
             )
-            return error_response.dict()
+            return error_response.model_dump()
     
     @bentoml.api
     def health(self) -> Dict[str, str]:

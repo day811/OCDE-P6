@@ -48,11 +48,16 @@ class ModelLoader:
         Returns:
             Prediction result
         """
-        model = self.load_model()
         try:
-            prediction = model.predict(input_data)
+            pipeline = self.load_model()
+            # 1) Transformation des données
+#            X_transformed = pipeline.transform(input_data)
+#            logger.debug(f"X_transformed shape: {X_transformed.shape}")
+
+            # 2) Prédiction
+            predictions = pipeline.predict(input_data)
             logger.info("Prediction completed successfully")
-            return prediction
+            return predictions
         except Exception as e:
             logger.error(f"Prediction failed: {str(e)}")
             raise ModelLoadError(f"Prediction error: {str(e)}")

@@ -71,6 +71,8 @@ def fix_floors_and_discretize(df):
     if 'SecondLargestPropertyUseType' in df.columns:
         df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('nan')
     
+    columns_to_drop = ['YearBuilt']
+    df = df.drop(columns=[col for col in columns_to_drop if col in df.columns])    
     return df
 
 
