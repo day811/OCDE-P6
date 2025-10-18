@@ -10,7 +10,7 @@ class BuildingInput(BaseModel):
     
     first_use_type: str = Field(
         ...,
-        description="Primary use type of the building",
+        description="First largest property use type",
         example="Hotel"
     )
     
