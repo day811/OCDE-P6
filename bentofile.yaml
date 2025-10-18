@@ -4,6 +4,9 @@ service: "ocde_p6.api.service:BuildingEnergyService"
 name: "building_energy_prediction"
 description: "API for predicting building energy consumption in Seattle"
 
+models:
+  - "building_energy_rf_pipeline:latest"
+
 include:
   - "ocde_p6/"
   - "*.py"
