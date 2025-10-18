@@ -11,13 +11,14 @@ from ..validation.schemas import BuildingInput
 
 logger = get_logger(__name__)
 
-def fix_floors_and_discretize(df):
+def fix_floors_and_discretize(df_in):
     """
     Fonction de preprocessing personnalisée appliquée dans le pipeline.
     Cette fonction doit être identique à celle du notebook.
     """
     # Copie pour ne pas modifier l'original
-    df = df.copy()
+    df = df_in.copy()
+    df.replace('', pd.NA, inplace=True)
     
     # Exemple de traitement (adapte selon ton notebook)
     # Fix floors
@@ -69,6 +70,7 @@ def fix_floors_and_discretize(df):
     
     # Remplir NaN dans SecondLargestPropertyUseType
     if 'SecondLargestPropertyUseType' in df.columns:
+        # Conversion "" → NaN pour toutes les colonnes (ou celle spécifique)
         df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('nan')
     
     columns_to_drop = ['YearBuilt']
