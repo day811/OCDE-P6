@@ -27,24 +27,16 @@ def fix_floors_and_discretize(df_in):
         df['NumberofFloors'] = df['NumberofFloors'].clip(lower=1)
     
     # Créer PropertySize (exemple - adapte selon ton code)
-    if 'LargestPropertyUseTypeGFA' in df.columns and 'SecondLargestPropertyUseTypeGFA'in df.columns: 
-        df['SumPropertyGFA'] = (
-            df['LargestPropertyUseTypeGFA'] + 
-            df.get('SecondLargestPropertyUseTypeGFA', 0)
-        )
-        
-        # Discretize size
-        bins = [0, 20000, 100000, 500000, float('inf')]
-        labels = ['Small', 'Mid', 'Large', 'XLarge']
-        df['PropertySize'] = pd.cut(df['SumPropertyGFA'], bins=bins, labels=labels)
-    
-    # Créer PropertySize (exemple - adapte selon ton code)
     if 'SumLargestGFA' in df.columns:
         
         # Discretize size
         bins = [0, 20000, 100000, 500000, float('inf')]
         labels = ['Small', 'Mid', 'Large', 'XLarge']
         df['PropertySize'] = pd.cut(df['SumLargestGFA'], bins=bins, labels=labels)
+        df['log_GFA'] = np.log1p(df['SumLargestGFA'])
+        df['GFA_per_floor'] = df['SumLargestGFA'] / df['NumberofFloors']
+        df['building_volume'] = df['SumLargestGFA'] * df['NumberofFloors']
+
 
     # Créer AgeProperty et AgeCategory
     if 'YearBuilt' in df.columns:
@@ -73,7 +65,7 @@ def fix_floors_and_discretize(df_in):
         # Conversion "" → NaN pour toutes les colonnes (ou celle spécifique)
         df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('nan')
     
-    columns_to_drop = ['YearBuilt']
+    columns_to_drop = ['YearBuilt','NumberofFloors','SumLargestGFA','PropertySize' ,]
     df = df.drop(columns=[col for col in columns_to_drop if col in df.columns])    
     return df
 
