@@ -53,7 +53,7 @@ def fix_floors_and_discretize(df_in):
         
         # Discretize age
         age_bins = [0, 10, 30, float('inf')]
-        age_labels = ['Neuf', 'Récent', 'Historique']
+        age_labels = ['New', 'Recent', 'Old']
         df['AgeCategory'] = pd.cut(df['AgeProperty'], bins=age_bins, labels=age_labels)
     
     # Créer EnergyEra
