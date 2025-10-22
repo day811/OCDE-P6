@@ -84,9 +84,9 @@ class BuildingInput(BaseModel):
         example=1927
     )
     
-    class Config:
-        """Pydantic configuration."""
-        schema_extra = {
+    """Pydantic configuration."""
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "first_use_type": "Hotel",
                 "second_largest_property_use_type": None,
@@ -101,7 +101,8 @@ class BuildingInput(BaseModel):
                 "year_built": 1927
             }
         }
-
+    }
+        
 class PredictionResponse(BaseModel):
     """Response schema for prediction results."""
     
