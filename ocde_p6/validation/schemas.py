@@ -4,17 +4,18 @@
 
 from pydantic import BaseModel, Field, validator
 from typing import Optional
+from ..utils.enums import FirstUseTypeEnum
 
 class BuildingInput(BaseModel):
     """Input schema for building energy prediction."""
     
-    first_use_type: str = Field(
+    first_use_type: Optional[FirstUseTypeEnum] = Field(
         ...,
         description="First largest property use type",
-        example="Hotel"
+        example="Hospital"
     )
     
-    second_largest_property_use_type: Optional[str] = Field(
+    second_use_type: Optional[str] = Field(
         default=None,
         description="Second largest property use type",
         example="Parking"
@@ -28,7 +29,7 @@ class BuildingInput(BaseModel):
         example=1
     )
     
-    sum_largest_GFA : float = Field(
+    sum_largest_gfa : float = Field(
         ...,
         ge=0,
         description="Three largest property use type GFA in square feet",
@@ -88,17 +89,17 @@ class BuildingInput(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "first_use_type": "Hotel",
-                "second_largest_property_use_type": None,
+                "first_use_type": "Hospital",
+                "second_use_type": None,
                 "multiple_use_type": 1,
-                "3LargestGFA": 88434.0,
+                "sum_largest_gfa": 88434.0,
                 "use_steam": True,
                 "use_gas": False,
                 "number_of_floors": 12.0,
                 "number_of_buildings": 1.0,
                 "city_distance": 8.5,
                 "neighborhood": "DOWNTOWN",
-                "year_built": 1927
+                "year_built": 1999
             }
         }
     }
