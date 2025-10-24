@@ -1,20 +1,51 @@
-#ocde_p6/validations/schemas.py
+#ocde_p6/validation/schemas.py
 
 """Pydantic schemas for input validation."""
 
-from pydantic import BaseModel, Field, validator
-from typing import Optional
+from pydantic import BaseModel, Field
+from typing import Optional, Literal
+
+
+FirstUseTypeLiteral = Literal[
+    "Data Center",
+    "Distribution Center",
+    "Hospital",
+    "K-12 School",
+    "Laboratory",
+    "Large Office",
+    "Manufacturing/Industrial Plant",
+    "Other",
+    "Parking",
+    "Restaurant",
+    "Self-Storage Facility",
+    "Supermarket / Grocery Store",
+    "University",
+    "Warehouse",
+    "Worship Facility",
+    "Value not listed"
+]
+
+SecondLargestPropertyUseTypeLiteral = Literal[
+    "Data Center",
+    "Laboratory",
+    "Office",
+    "Parking",
+    "Restaurant",
+    "Value not listed",
+    "None"
+]
+
 
 class BuildingInput(BaseModel):
     """Input schema for building energy prediction."""
     
-    first_use_type: str = Field(
+    first_use_type: FirstUseTypeLiteral = Field(
         ...,
         description="First largest property use type",
         example="Hotel"
     )
     
-    second_largest_property_use_type: Optional[str] = Field(
+    second_largest_property_use_type: Optional[SecondLargestPropertyUseTypeLiteral] = Field(
         default=None,
         description="Second largest property use type",
         example="Parking"
@@ -28,7 +59,7 @@ class BuildingInput(BaseModel):
         example=1
     )
     
-    sum_largest_GFA : float = Field(
+    sum_largest_gfa: float = Field(
         ...,
         ge=0,
         description="Three largest property use type GFA in square feet",
@@ -83,33 +114,33 @@ class BuildingInput(BaseModel):
         description="Year the building was constructed",
         example=1927
     )
-    
-    """Pydantic configuration."""
+
     model_config = {
         "json_schema_extra": {
             "example": {
-                "first_use_type": "Hotel",
+                "first_use_type": "Hospital",
                 "second_largest_property_use_type": None,
                 "multiple_use_type": 1,
-                "3LargestGFA": 88434.0,
+                "sum_largest_gfa": 88434.0,
                 "use_steam": True,
-                "use_gas": False,
+                "use_gas": True,
                 "number_of_floors": 12.0,
                 "number_of_buildings": 1.0,
                 "city_distance": 8.5,
                 "neighborhood": "DOWNTOWN",
-                "year_built": 1927
+                "year_built": 1999
             }
         }
     }
-        
+
+
 class PredictionResponse(BaseModel):
     """Response schema for prediction results."""
     
     prediction: float = Field(
         ...,
-        description="Predicted energy consumption in kBtu/sf",
-        example=81.71
+        description="Predicted energy consumption in kBtu",
+        example=810325.71
     )
     
     input_data: BuildingInput = Field(
@@ -121,6 +152,7 @@ class PredictionResponse(BaseModel):
         default="success",
         description="Status of the prediction"
     )
+
 
 class ErrorResponse(BaseModel):
     """Error response schema."""

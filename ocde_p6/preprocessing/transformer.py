@@ -1,4 +1,5 @@
 #ocde_p6/preprocessing/transformer.py
+
 """Data transformation utilities for API inputs."""
 
 import pandas as pd
@@ -37,7 +38,6 @@ def fix_floors_and_discretize(df_in):
         df['GFA_per_floor'] = df['SumLargestGFA'] / df['NumberofFloors']
         df['building_volume'] = df['SumLargestGFA'] * df['NumberofFloors']
 
-
     # Créer AgeProperty et AgeCategory
     if 'YearBuilt' in df.columns:
         current_year = 2016  # Année des données
@@ -62,10 +62,9 @@ def fix_floors_and_discretize(df_in):
     
     # Remplir NaN dans SecondLargestPropertyUseType
     if 'SecondLargestPropertyUseType' in df.columns:
-        # Conversion "" → NaN pour toutes les colonnes (ou celle spécifique)
-        df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('nan')
+        df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('None')
     
-    columns_to_drop = ['YearBuilt','NumberofFloors','SumLargestGFA','PropertySize' ,]
+    columns_to_drop = ['YearBuilt', 'NumberofFloors', 'SumLargestGFA', 'PropertySize']
     df = df.drop(columns=[col for col in columns_to_drop if col in df.columns])    
     return df
 
@@ -102,7 +101,7 @@ class DataTransformer:
         
         self.numerical_features = [
             'AgeProperty',
-            '3LargestGFA',
+            'SumLargestGFA',
             'CityDistance',
             'MultipleUseType',
             'NumberofFloors',
@@ -120,11 +119,12 @@ class DataTransformer:
         """
         try:
             # Créer DataFrame avec les features attendues par le pipeline
+            # ATTENTION: Les noms des colonnes DOIVENT correspondre au format Pascal Case
             data = {
                 'FirstUseType': building_input.first_use_type,
-                'SecondLargestPropertyUseType': building_input.second_largest_property_use_type,
+                'SecondLargestPropertyUseType': building_input.second_largest_property_use_type or 'None',
                 'MultipleUseType': building_input.multiple_use_type,
-                'SumLargestGFA': building_input.sum_largest_GFA,
+                'SumLargestGFA': building_input.sum_largest_gfa,
                 'UseSteam': building_input.use_steam,
                 'UseGas': building_input.use_gas,
                 'NumberofFloors': building_input.number_of_floors,
@@ -137,8 +137,14 @@ class DataTransformer:
             df = pd.DataFrame([data])
             
             logger.info(f"Transformed input: {data}")
+            logger.info(f"DataFrame columns: {df.columns.tolist()}")
+            logger.info(f"DataFrame:\n{df}")
+            
             return df
             
+        except AttributeError as e:
+            logger.error(f"Attribute error transforming input: {str(e)}")
+            raise ValueError(f"Failed to transform input data - attribute missing: {str(e)}")
         except Exception as e:
             logger.error(f"Error transforming input: {str(e)}")
             raise ValueError(f"Failed to transform input data: {str(e)}")

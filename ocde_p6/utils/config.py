@@ -5,6 +5,7 @@
 import os
 from typing import Optional
 
+
 class Config:
     """Application configuration."""
     
@@ -20,10 +21,47 @@ class Config:
     
     # Feature configuration
     REQUIRED_FEATURES = ['YearBuilt', 'FirstUseType']
-    ALLOWED_USE_TYPES = ['Hotel', 'DataCenter', 'Restaurant']
     
     # Validation ranges
     MIN_YEAR_BUILT = 1900
     MAX_YEAR_BUILT = 2025
+    
+    # First use type values for API parameters
+    FIRST_USE_TYPE_VALUES = [
+        "Data Center",
+        "Distribution Center",
+        "Hospital",
+        "K-12 School",
+        "Laboratory",
+        "Large Office",
+        "Manufacturing/Industrial Plant",
+        "Other",
+        "Parking",
+        "Restaurant",
+        "Self-Storage Facility",
+        "Supermarket / Grocery Store",
+        "University",
+        "Warehouse",
+        "Worship Facility",
+        "Value not listed"
+    ]
+    
+    # Second largest use type values for API parameters
+    SECOND_LARGEST_USE_TYPE_VALUES = [
+        "Data Center",
+        "Laboratory",
+        "Office",
+        "Parking",
+        "Restaurant",
+        "Value not listed",
+        "None"
+    ]
+    
+    # Neighborhood values
+    NEIGHBORHOODS = [
+        "GREATER DUWAMISH",
+        "Value not listed",
+    ]
+
 
 config = Config()
