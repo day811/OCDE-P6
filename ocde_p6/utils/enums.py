@@ -26,7 +26,7 @@ class FirstUseTypeEnum(str, Enum):
     value_not_listed = "Value not listed"
 
 
-class SecondLargestPropertyUseTypeEnum(str, Enum):
+class SecondUseTypeEnum(str, Enum):
     """Second largest property use type enum."""
     
     data_center = "Data Center"

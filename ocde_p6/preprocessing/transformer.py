@@ -8,7 +8,6 @@ import logging
 
 from ..utils.logger import get_logger
 from ..validation.schemas import BuildingInput
-from ..utils.enums import FirstUseTypeEnum
 
 logger = get_logger(__name__)
 
@@ -121,7 +120,7 @@ class DataTransformer:
             # Créer DataFrame avec les features attendues par le pipeline
             data = {
                 'FirstUseType': building_input.first_use_type.value,
-                'SecondLargestPropertyUseType': building_input.second_use_type,
+                'SecondLargestPropertyUseType': building_input.second_use_type.value,
                 'MultipleUseType': building_input.multiple_use_type,
                 'SumLargestGFA': building_input.sum_largest_gfa,
                 'UseSteam': building_input.use_steam,

@@ -1,4 +1,4 @@
-#ocde_p6/utils/exceptions
+#ocde_p6/utils/exceptions.py
 
 """Custom exceptions for the API."""
 

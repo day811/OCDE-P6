@@ -4,19 +4,19 @@
 
 from pydantic import BaseModel, Field, validator
 from typing import Optional
-from ..utils.enums import FirstUseTypeEnum
+from ..utils.enums import FirstUseTypeEnum, SecondUseTypeEnum
 
 class BuildingInput(BaseModel):
     """Input schema for building energy prediction."""
     
     first_use_type: Optional[FirstUseTypeEnum] = Field(
-        ...,
+        "Value not listed",
         description="First largest property use type",
         example="Hospital"
     )
     
-    second_use_type: Optional[str] = Field(
-        default=None,
+    second_use_type: Optional[SecondUseTypeEnum] = Field(
+        "None",
         description="Second largest property use type",
         example="Parking"
     )
@@ -90,7 +90,7 @@ class BuildingInput(BaseModel):
         "json_schema_extra": {
             "example": {
                 "first_use_type": "Hospital",
-                "second_use_type": None,
+                "second_use_type": "None",
                 "multiple_use_type": 1,
                 "sum_largest_gfa": 88434.0,
                 "use_steam": True,
