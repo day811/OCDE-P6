@@ -44,9 +44,10 @@ class ModelLoader:
         
         Args:
             input_data: Preprocessed input data for prediction
+            see docs.json to check first_use_type and second_use_type allowed values (respectively in FirstUseTypeEnum and SecondUseTypeEnum properties)
             
         Returns:
-            Prediction result
+            Prediction result  in kbtu
         """
         try:
             pipeline = self.load_model()

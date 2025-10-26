@@ -6,6 +6,7 @@ import bentoml
 
 
 import pandas as pd
+import numpy as np
 from typing import Dict, Any
 import traceback
 
@@ -53,7 +54,7 @@ class BuildingEnergyService:
             
             # Prepare response
             response = PredictionResponse(
-                prediction=round(float(prediction[0]),0),
+                prediction=round(np.expm1(float(prediction[0])),2),
                 input_data=input_data,
                 status="success"
             )

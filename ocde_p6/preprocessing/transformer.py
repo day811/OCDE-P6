@@ -63,7 +63,7 @@ def fix_floors_and_discretize(df_in):
     # Remplir NaN dans SecondLargestPropertyUseType
     if 'SecondLargestPropertyUseType' in df.columns:
         # Conversion "" → NaN pour toutes les colonnes (ou celle spécifique)
-        df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('nan')
+        df['SecondLargestPropertyUseType'] = df['SecondLargestPropertyUseType'].fillna('None')
     
     columns_to_drop = ['YearBuilt','NumberofFloors','SumLargestGFA','PropertySize' ,]
     df = df.drop(columns=[col for col in columns_to_drop if col in df.columns])    

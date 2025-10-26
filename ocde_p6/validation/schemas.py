@@ -110,7 +110,7 @@ class PredictionResponse(BaseModel):
     prediction: float = Field(
         ...,
         description="Predicted energy consumption in kBtu/sf",
-        example=81.71
+        example=890500.00
     )
     
     input_data: BuildingInput = Field(
