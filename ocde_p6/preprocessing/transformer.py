@@ -20,13 +20,13 @@ def fix_floors_and_discretize(df_in):
     df = df_in.copy()
     df.replace('', pd.NA, inplace=True)
     
-    # Exemple de traitement (adapte selon ton notebook)
+
     # Fix floors
     if 'NumberofFloors' in df.columns:
         df['NumberofFloors'] = df['NumberofFloors'].fillna(1)
         df['NumberofFloors'] = df['NumberofFloors'].clip(lower=1)
     
-    # Créer PropertySize (exemple - adapte selon ton code)
+    # Créer PropertySize 
     if 'SumLargestGFA' in df.columns:
         
         # Discretize size
