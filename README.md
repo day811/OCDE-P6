@@ -80,8 +80,8 @@ Cinq algorithmes de régression supervisée ont été comparés via validation c
 - **Performance finale sur le jeu de test** : R²=0.87, RMSE=8,708,608 kBtu, MAE=3,180,539 kBtu, MAPE=45.56%
 
 **Features les plus importantes** :
-1. `log_GFA` (surface agrégée en log) : 66.78%
-2. `building_volume` : 6.74%
+1. `SumLargestGFA` (surface agrégée en log) : 66.74%
+2. `building_volume` : 6.87%
 3. Type de propriété principal (Supermarché, Entrepôt, Centre de distribution)
 4. Usage du gaz naturel (`UseGas`)
 5. Distance au centre-ville
@@ -164,7 +164,7 @@ curl -X POST http://127.0.0.1:3000/predict \
   -d '{
     "input_data": {
       "first_use_type": "Hotel",
-      "second_largest_property_use_type": null,
+      "second_largest_property_use_type": "None",
       "multiple_use_type": 1,
       "sum_largest_GFA": 88434.0,
       "use_steam": true,
