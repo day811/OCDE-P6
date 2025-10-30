@@ -163,10 +163,10 @@ curl -X POST http://127.0.0.1:3000/predict \
   -H "Content-Type: application/json" \
   -d '{
     "input_data": {
-      "first_use_type": "Hotel",
-      "second_largest_property_use_type": "None",
+      "first_use_type": "Hospital",
+      "second_use_type": "None",
       "multiple_use_type": 1,
-      "sum_largest_GFA": 88434.0,
+      "sum_largest_GFA": 108434.0,
       "use_steam": true,
       "use_gas": false,
       "number_of_floors": 12.0,
@@ -362,10 +362,10 @@ curl -X POST https://building-energy-prediction-XXX.europe-west1.run.app/predict
   -H "Content-Type: application/json" \
   -d '{
     "input_data": {
-      "first_use_type": "Hotel",
-      "second_largest_property_use_type": null,
+      "first_use_type": "Hospital",
+      "second_use_type": "None",
       "multiple_use_type": 1,
-      "sum_largest_GFA": 88434.0,
+      "sum_largest_GFA": 108434.0,
       "use_steam": true,
       "use_electricity": true,
       "use_gas": false,
@@ -420,7 +420,7 @@ L'API utilise **Pydantic** pour valider les données d'entrée. Voici les champs
 | Champ | Type | Description | Contraintes |
 |-------|------|-------------|-------------|
 | `first_use_type` | Enum | Type d'usage principal | Valeurs définies dans `FirstUseTypeEnum` |
-| `second_largest_property_use_type` | Enum (optional) | Type d'usage secondaire | Valeurs définies dans `SecondUseTypeEnum` |
+| `second_use_type` | Enum (optional) | Type d'usage secondaire | Valeurs définies dans `SecondUseTypeEnum` |
 | `multiple_use_type` | int | Nombre d'usages différents | Entre 1 et 10 |
 | `sum_largest_GFA` | float | Surface totale (pieds carrés) | ≥ 0 |
 | `use_steam` | bool | Utilisation de vapeur | true/false |
@@ -450,7 +450,7 @@ L'API utilise **Pydantic** pour valider les données d'entrée. Voici les champs
 - Worship Facility
 - Value not listed
 
-### Valeurs autorisées pour `second_largest_property_use_type`
+### Valeurs autorisées pour `second_use_type`
 
 - Data Center
 - Laboratory
@@ -466,12 +466,12 @@ L'API utilise **Pydantic** pour valider les données d'entrée. Voici les champs
 
 ```json
 {
-  "prediction": 8110619.91,
+  "prediction": 10230986.65,
   "input_data": {
-    "first_use_type": "Hotel",
+    "first_use_type": "Hospital",
     "second_largest_property_use_type": "None",
     "multiple_use_type": 1,
-    "sum_largest_GFA": 88434.0,
+    "sum_largest_GFA": 108434.0,
     "use_steam": true,
     "use_gas": false,
     "number_of_floors": 12.0,
@@ -508,7 +508,7 @@ Le pipeline de preprocessing applique les transformations suivantes dans l'ordre
 
 1. **Preprocessing personnalisé** (`fix_floors_and_discretize`) :
    - Correction des valeurs de `NumberofFloors` (minimum 1)
-   - Création de variables dérivées : `log_GFA`, `GFA_per_floor`, `building_volume`
+   - Création de variables dérivées : `GFA_per_floor`, `building_volume`
    - Discrétisation de la surface : `PropertySize` (Small, Mid, Large, XLarge)
    - Calcul de l'âge : `AgeProperty` et `AgeCategory` (New, Recent, Old)
    - Création de `EnergyEra` (Pre-Crisis si construit avant 1973, sinon Modern)
