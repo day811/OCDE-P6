@@ -92,14 +92,14 @@ class BuildingInput(BaseModel):
                 "first_use_type": "Hospital",
                 "second_use_type": "None",
                 "multiple_use_type": 1,
-                "sum_largest_gfa": 88434.0,
+                "sum_largest_gfa": 108434.0,
                 "use_steam": True,
                 "use_gas": False,
                 "number_of_floors": 12.0,
                 "number_of_buildings": 1.0,
                 "city_distance": 8.5,
                 "neighborhood": "DOWNTOWN",
-                "year_built": 1999
+                "year_built": 2009
             }
         }
     }
