@@ -1,6 +1,5 @@
 #.gitignore
 sources/
-bash/
 local_*
 bc_after_eda*
 
