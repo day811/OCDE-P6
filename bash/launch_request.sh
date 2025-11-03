@@ -9,9 +9,9 @@ curl -X POST http://127.0.0.1:3000/predict \
       "use_steam": true,
       "use_gas": false,
       "number_of_floors": 12.0,
-      "number_of_buildings": 3.0,
+      "number_of_buildings": 1.0,
       "city_distance": 8.5,
       "neighborhood": "DOWNTOWN",
-      "year_built": 1999
+      "year_built": 2009
     }
   }'
