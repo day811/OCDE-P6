@@ -14,7 +14,6 @@ logger = get_logger(__name__)
 def fix_floors_and_discretize(df_in):
     """
     Fonction de preprocessing personnalisée appliquée dans le pipeline.
-    Cette fonction doit être identique à celle du notebook.
     """
     # Copie pour ne pas modifier l'original
     df = df_in.copy()
